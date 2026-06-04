@@ -3,19 +3,69 @@
 :root {
     --sidebar-w: 260px;
     --topbar-h:  56px;
+    --bg:        #ffffff;
+    --sidebar-bg:#f8f9fa;
+    --topbar-bg: #ffffff;
+    --card-bg:   #ffffff;
+    --border:    #dee2e6;
+    --text:      #212529;
+    --heading:   #212529;
+    --muted:     #6c757d;
+    --accent:    #0d6efd;
+    --nav-hover: #e9ecef;
+    --code-bg:   #f8f9fa;
+
+    --esse-bg:         var(--bg);
+    --esse-surface:    var(--card-bg);
+    --esse-border:     var(--border);
+    --esse-text:       var(--text);
+    --esse-text-muted: var(--muted);
+    --esse-radius:     .375rem;
+    --esse-primary:    var(--accent);
+    --esse-success:    #198754;
+    --esse-warning:    #ffc107;
+    --esse-danger:     #dc3545;
+    --esse-info:       #0dcaf0;
+}
+
+[data-bs-theme="light"] {
+    color-scheme: light;
+    --bg:        #ffffff;
+    --sidebar-bg:#f8f9fa;
+    --topbar-bg: #ffffff;
+    --card-bg:   #ffffff;
+    --border:    #dee2e6;
+    --text:      #212529;
+    --heading:   #212529;
+    --muted:     #6c757d;
+    --accent:    #0d6efd;
+    --nav-hover: #e9ecef;
+    --code-bg:   #f8f9fa;
+}
+
+[data-bs-theme="dark"] {
+    color-scheme: dark;
     --bg:        #0f0f0f;
     --sidebar-bg:#111318;
+    --topbar-bg: #111318;
     --card-bg:   #1a1d23;
     --border:    #2a2d35;
     --text:      #dee2e6;
-    --muted:     #6c757d;
+    --heading:   #f8f9fa;
+    --muted:     #9aa3af;
     --accent:    #6ea8fe;
+    --nav-hover: #1e2028;
+    --code-bg:   #0d0f14;
 }
 
 body {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--text);
+    --bs-border-color: var(--border);
+    --bs-secondary-color: var(--muted);
 }
 
 /* ── Sidebar ── */
@@ -33,13 +83,16 @@ body {
 }
 
 #dash-sidebar .brand {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
     font-size: 1rem;
     font-weight: 700;
-    letter-spacing: .08em;
-    color: #fff;
+    color: var(--heading);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
+}
+
+#dash-sidebar .brand a {
+    color: var(--heading);
 }
 
 #dash-sidebar .brand small {
@@ -53,39 +106,70 @@ body {
 #dash-sidebar nav {
     flex: 1;
     overflow-y: auto;
-    padding: .5rem 0;
+    padding: .75rem 0;
 }
 
 #dash-sidebar nav .nav-section {
-    padding: .75rem 1.5rem .25rem;
-    font-size: .65rem;
+    padding: .75rem 1.25rem .25rem;
+    font-size: .68rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .1em;
-    color: #3a3f50;
+    letter-spacing: .08em;
+    color: var(--muted);
 }
 
 #dash-sidebar nav a {
     display: flex;
     align-items: center;
     gap: .6rem;
-    padding: .5rem 1.5rem;
+    padding: .5rem 1.25rem;
     color: var(--muted);
     text-decoration: none;
     font-size: .875rem;
-    border-left: 2px solid transparent;
-    transition: color .15s, background .15s;
+    border-left: 3px solid transparent;
+    transition: color .15s, background .15s, border-color .15s;
     white-space: nowrap;
     overflow: hidden;
 }
 
-#dash-sidebar nav a:hover  { color: #fff; background: #1e2028; }
-#dash-sidebar nav a.active { color: #fff; border-left-color: var(--accent); background: #1e2028; }
+#dash-sidebar nav a i:first-child {
+    width: 1rem;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+#dash-sidebar nav a:hover  { color: var(--heading); background: var(--nav-hover); }
+#dash-sidebar nav a.active { color: var(--accent); border-left-color: var(--accent); background: var(--nav-hover); font-weight: 600; }
 
 #dash-sidebar .sidebar-footer {
-    padding: 1rem 1.5rem;
+    padding: .75rem;
     border-top: 1px solid var(--border);
     font-size: .8rem;
     flex-shrink: 0;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    min-height: 2.35rem;
+    color: var(--text);
+    background: transparent;
+    border: 0;
+    text-align: left;
+}
+
+.user-menu:hover,
+.user-menu:focus {
+    color: var(--heading);
+    background: var(--nav-hover);
+}
+
+.user-menu span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* ── Topbar ── */
@@ -93,7 +177,7 @@ body {
     position: fixed;
     top: 0; left: var(--sidebar-w); right: 0;
     height: var(--topbar-h);
-    background: var(--sidebar-bg);
+    background: var(--topbar-bg);
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
@@ -106,19 +190,52 @@ body {
     font-size: 1rem;
     font-weight: 600;
     margin: 0;
-    color: #fff;
+    color: var(--heading);
 }
 
 /* ── Main content ── */
 #dash-main {
     margin-left: var(--sidebar-w);
     padding-top: var(--topbar-h);
-    min-height: 100vh;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .dash-content {
     padding: 1.75rem;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.dash-content-header {
     max-width: 1200px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.dash-content-header h1 {
+    margin: 0;
+    color: var(--heading);
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.esse-content {
+    max-width: 1200px;
+}
+
+.dash-footer {
+    width: min(1200px, calc(100% - 3.5rem));
+    margin: 0 1.75rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
 }
 
 /* ── Mobile: sidebar hidden by default ── */
@@ -144,10 +261,96 @@ body {
     padding: 1.25rem;
 }
 
+.esse-content .card {
+    background: var(--card-bg);
+    border-color: var(--border);
+}
+
+.esse-content .card-header {
+    background: var(--code-bg);
+    border-bottom-color: var(--border);
+}
+
+.esse-content .table {
+    color: var(--text);
+}
+
+.esse-content .table td,
+.esse-content .table th {
+    border-color: var(--border);
+}
+
+.esse-content .table tbody tr:hover {
+    background: var(--nav-hover);
+}
+
+.esse-content .form-control,
+.esse-content .form-select {
+    color: var(--text);
+    background: var(--bg);
+    border-color: var(--border);
+}
+
+/* ── ESSE UI plugin surface ── */
+.esse-panel,
+.esse-empty-state {
+    background: var(--esse-surface);
+    border-color: var(--esse-border);
+    color: var(--esse-text);
+}
+
+.esse-panel-header,
+.esse-section-title,
+.esse-table th,
+.esse-tabs-btn {
+    color: var(--heading);
+}
+
+.esse-btn--primary {
+    background: var(--esse-primary);
+    border-color: var(--esse-primary);
+}
+
+.esse-table {
+    color: var(--esse-text);
+}
+
+.esse-table th,
+.esse-table td {
+    border-color: var(--esse-border);
+}
+
+.esse-grid-wrap {
+    width: 100%;
+}
+
+.esse-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.esse-grid[data-cols="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.esse-grid[data-cols="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.esse-grid[data-cols="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.esse-grid[data-cols="6"] { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+.esse-grid-item {
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    .esse-grid[data-cols="3"],
+    .esse-grid[data-cols="4"],
+    .esse-grid[data-cols="6"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 /* ── Prose ── */
-.esse-content h1,.esse-content h2,.esse-content h3 { color: #f8f9fa; margin-top: 1.5rem; }
+.esse-content h1,.esse-content h2,.esse-content h3 { color: var(--heading); margin-top: 1.5rem; }
 .esse-content a   { color: var(--accent); }
-.esse-content pre { background: #0d0f14; border: 1px solid var(--border); border-radius: .375rem; padding: 1rem; overflow-x: auto; }
+.esse-content pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: .375rem; padding: 1rem; overflow-x: auto; }
 .esse-content code { color: #e2b94b; }
 .esse-content pre code { color: inherit; }
 
@@ -155,9 +358,8 @@ body {
 .dash-has-children { position: relative; }
 .dash-sub {
     display: none;
-    background: #0d0f14;
     border-left: 2px solid var(--border);
-    margin-left: 2.5rem;
+    margin-left: 1.75rem;
 }
 .dash-sub a { padding-left: 1rem; font-size: .82rem; }
 .dash-has-children.open .dash-sub { display: block; }

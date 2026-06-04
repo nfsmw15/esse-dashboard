@@ -11,13 +11,20 @@ $title   = $page['error_title']   ?? 'Fehler';
 $message = $page['error_message'] ?? '';
 ?>
 <!DOCTYPE html>
-<html lang="de" data-bs-theme="dark">
+<html lang="de" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= $code ?> — <?= htmlspecialchars($siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>">
+    <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260604-scrollbar-edge">
+    <script>
+    (() => {
+        const storedTheme = localStorage.getItem('esse-dashboard-theme');
+        document.documentElement.setAttribute('data-bs-theme', storedTheme === 'dark' ? 'dark' : 'light');
+    })();
+    </script>
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100">
 <div class="text-center">

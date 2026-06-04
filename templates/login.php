@@ -7,13 +7,20 @@
 $redirect = $_SERVER['REQUEST_URI'] ?? '/';
 ?>
 <!DOCTYPE html>
-<html lang="de" data-bs-theme="dark">
+<html lang="de" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>">
+    <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260604-scrollbar-edge">
+    <script>
+    (() => {
+        const storedTheme = localStorage.getItem('esse-dashboard-theme');
+        document.documentElement.setAttribute('data-bs-theme', storedTheme === 'dark' ? 'dark' : 'light');
+    })();
+    </script>
     <style>
         body { display:flex; flex-direction:column; min-height:100vh; }
         .login-wrap { flex:1; display:flex; justify-content:center; align-items:center; padding:2rem 1rem; }
@@ -25,7 +32,7 @@ $redirect = $_SERVER['REQUEST_URI'] ?? '/';
 
 <div class="login-wrap"><div class="login-box">
     <div class="text-center mb-4">
-        <h1 class="h4 fw-bold text-white mb-0"><?= htmlspecialchars($siteName) ?></h1>
+        <h1 class="h4 fw-bold mb-0"><?= htmlspecialchars($siteName) ?></h1>
     </div>
 
     <?php if (!empty($_GET['login_error'])): ?>
@@ -39,14 +46,12 @@ $redirect = $_SERVER['REQUEST_URI'] ?? '/';
             <div class="mb-3">
                 <label class="form-label text-secondary small">E-Mail</label>
                 <input type="email" name="login" class="form-control"
-                       autocomplete="username" autofocus required
-                       style="background:#0d0f14;border-color:var(--border);color:var(--text)">
+                       autocomplete="username" autofocus required>
             </div>
             <div class="mb-4">
                 <label class="form-label text-secondary small">Passwort</label>
                 <input type="password" name="password" class="form-control"
-                       autocomplete="current-password" required
-                       style="background:#0d0f14;border-color:var(--border);color:var(--text)">
+                       autocomplete="current-password" required>
             </div>
             <button class="btn btn-primary w-100">Anmelden</button>
         </form>
@@ -80,7 +85,7 @@ $redirect = $_SERVER['REQUEST_URI'] ?? '/';
         <?php foreach ($groups as $group): ?>
         <div>
             <?php if ($group['header'] !== null): ?>
-            <p class="text-white small fw-semibold mb-1"><?= htmlspecialchars($group['header']) ?></p>
+            <p class="small fw-semibold mb-1" style="color:var(--heading)"><?= htmlspecialchars($group['header']) ?></p>
             <hr class="border-secondary mt-0 mb-2">
             <?php endif ?>
             <?php foreach ($group['links'] as $link): ?>

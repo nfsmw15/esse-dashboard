@@ -11,19 +11,26 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="de" data-bs-theme="dark">
+<html lang="de" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($page['title'] . ' — ' . $siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>">
+    <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260604-scrollbar-edge">
+    <script>
+    (() => {
+        const storedTheme = localStorage.getItem('esse-dashboard-theme');
+        document.documentElement.setAttribute('data-bs-theme', storedTheme === 'dark' ? 'dark' : 'light');
+    })();
+    </script>
 </head>
 <body style="background:var(--bg)">
 
 <!-- Minimal topbar -->
 <nav style="background:var(--sidebar-bg);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between">
-    <a href="/" class="text-white text-decoration-none fw-bold"><?= htmlspecialchars($siteName) ?></a>
+    <a href="/" class="text-decoration-none fw-bold" style="color:var(--heading)"><?= htmlspecialchars($siteName) ?></a>
     <a href="/admin/login" class="btn btn-sm btn-outline-secondary">
         Anmelden
     </a>
@@ -63,7 +70,7 @@
         <?php foreach ($groups as $group): ?>
         <div>
             <?php if ($group['header'] !== null): ?>
-            <p class="text-white small fw-semibold mb-1"><?= htmlspecialchars($group['header']) ?></p>
+            <p class="small fw-semibold mb-1" style="color:var(--heading)"><?= htmlspecialchars($group['header']) ?></p>
             <hr class="border-secondary mt-0 mb-2">
             <?php endif ?>
             <?php foreach ($group['links'] as $link): ?>

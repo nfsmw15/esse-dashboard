@@ -1,59 +1,57 @@
 # esse-dashboard
 
-**Version:** 0.0.1  
-Bootstrap 5 Sidebar/App-Layout-Theme für Dashboards und Member-Bereiche im ESSE CMS.
+Bootstrap-5-Dashboard-Theme für ESSE CMS. Das Theme ist für geschützte Dashboard-, Mitglieder- und App-Bereiche gedacht und bringt Sidebar, Topbar, Login-, Public- und Error-Layouts mit.
 
----
+**Aktuelle Manifest-Version:** `0.0.1`
 
-## Übersicht
+## Überblick
 
-`esse-dashboard` liefert ein klassisches App-Layout mit fixer Sidebar, Topbar und scrollbarem Hauptbereich. Das Theme unterscheidet automatisch zwischen angemeldeten Nutzern, öffentlichen Seiten und Fehlerseiten.
+`esse-dashboard` rendert angemeldete Nutzer in einem festen App-Layout:
 
-### Layouts
+- fixe Sidebar links mit Site-Name, Menü und User-Dropdown
+- fixe Topbar mit Mobile-Menübutton und Light/Dark-Umschalter
+- scrollender Contentbereich mit Seitenüberschrift im Content
+- fester Footer am unteren Rand des Layouts
+- Light- und Dark-Mode über Bootstrap `data-bs-theme`
+- ESSE-UI-Komponenten-Support für Plugin-Ausgaben
 
-| Situation | Template | Beschreibung |
-|---|---|---|
-| Nutzer eingeloggt | `layout.php` | Vollständiges App-Layout mit Sidebar & Topbar |
-| Seite `visibility = public`, nicht eingeloggt | `public.php` | Minimales Layout ohne Sidebar, mit Anmelden-Button |
-| Nicht eingeloggt (sonstige Seiten) | `login.php` | Zentrierte Login-Karte |
-| Fehler (`error_code` gesetzt) | `error.php` | Vollbild-Fehleranzeige (404, 500 …) |
-
----
+Nicht angemeldete Nutzer sehen entweder ein Public-Layout oder den Login-Screen.
 
 ## Voraussetzungen
 
-- ESSE CMS (PHP 8.x)
-- Bootstrap 5 unter `/public/vendor/bootstrap/`
-- Bootstrap Icons unter `/public/vendor/bootstrap-icons/`
-
----
+- ESSE CMS
+- PHP 8.x
+- Bootstrap CSS: `/public/vendor/bootstrap/css/bootstrap.min.css`
+- Bootstrap JS: `/public/vendor/bootstrap/js/bootstrap.bundle.min.js`
+- Bootstrap Icons: `/public/vendor/bootstrap-icons/bootstrap-icons.min.css`
+- ESSE UI: `/public/vendor/esse-ui/esse-ui.css`
 
 ## Installation
 
-Das Theme-Verzeichnis in den `themes/`-Ordner des ESSE CMS legen:
+Das Theme-Verzeichnis muss im ESSE CMS unter `themes/esse-dashboard` liegen:
 
-```
+```text
 themes/
 └── esse-dashboard/
     ├── theme.json
     ├── Theme.php
+    ├── README.md
+    ├── CHANGELOG.md
     ├── assets/
     │   └── css/
     │       └── esse-dashboard.css
     └── templates/
+        ├── error.php
         ├── layout.php
         ├── login.php
-        ├── public.php
-        └── error.php
+        └── public.php
 ```
 
-Anschließend das Theme im Admin-Bereich aktivieren.
+Danach kann das Theme im ESSE Admin aktiviert werden.
 
----
+## Manifest
 
-## Konfiguration
-
-### theme.json
+`theme.json`:
 
 ```json
 {
@@ -64,147 +62,230 @@ Anschließend das Theme im Admin-Bereich aktivieren.
     "class": "EsseDashboard\\Theme",
     "menus": {
         "sidebar": "Sidebar-Navigation",
-        "footer":  "Footer-Links"
+        "footer": "Footer-Links"
     }
 }
 ```
 
-### Menüs
+Wichtig für ESSE CMS:
 
-| Slot | Settings-Key | Standard-Slug | Beschreibung |
+- `name` muss dem Theme-Verzeichnis entsprechen: `esse-dashboard`.
+- `class` muss auf die Theme-Klasse zeigen: `EsseDashboard\Theme`.
+- Das GitHub-Repository muss für die CMS-Discovery das Topic `esse-theme` besitzen.
+- Veröffentlichte Versionen werden über GitHub Releases gefunden.
+
+## Rendering-Logik
+
+Die Auswahl des Templates passiert in `Theme.php`.
+
+| Zustand | Template | Verhalten |
+|---|---|---|
+| `error_code` gesetzt | `templates/error.php` | Vollbild-Fehlerseite |
+| Nutzer ist angemeldet | `templates/layout.php` | Dashboard/App-Layout mit Sidebar |
+| Nicht angemeldet und `visibility = public` | `templates/public.php` | Public-Layout ohne Sidebar |
+| Nicht angemeldet und geschützt | `templates/login.php` | Login-Screen |
+
+## Menüs
+
+Das Theme deklariert zwei Menü-Slots.
+
+| Slot | Settings-Key | Fallback-Slug | Zweck |
 |---|---|---|---|
 | `sidebar` | `theme_esse-dashboard_menu_sidebar` | `sidebar` | Hauptnavigation in der Sidebar |
-| `footer` | `theme_esse-dashboard_menu_footer` | `footer` | Links im Footer (Login- & Public-Layout) |
+| `footer` | `theme_esse-dashboard_menu_footer` | `footer` | Footer-Links |
 
-Die Slugs werden über die ESSE-Einstellungen gespeichert (`settings`-Tabelle).
+Sidebar-Menüs unterstützen:
 
-### Settings-Keys (Datenbank)
+- normale Links
+- Header-Einträge mit `type = header`
+- Einträge mit Kindern als aufklappbare Untermenüs
+- Bootstrap-Icon-Klassen über das optionale `icon` Feld
 
-| Key | Beschreibung |
-|---|---|
-| `site_name` | Wird im Brand-Bereich der Sidebar und im `<title>` angezeigt |
-| `theme_esse-dashboard_menu_sidebar` | Slug des Sidebar-Menüs |
-| `theme_esse-dashboard_menu_footer` | Slug des Footer-Menüs |
+Wenn kein Icon gesetzt ist, rendert das Theme kein Fallback-Icon. Dadurch entstehen keine Platzhalter-Kreise vor Menüeinträgen.
 
----
+## Layout
 
-## Seitentypen & Sichtbarkeit
+### Sidebar
 
-Die Anzeige hängt vom `visibility`-Feld der Seite und vom Login-Status ab:
+Die Sidebar ist links fixiert und enthält:
 
+- Site-Name mit kleinem Claim
+- Menü aus dem `sidebar` Slot
+- User-Dropdown unten
+
+Das User-Dropdown enthält:
+
+- `Profil`
+- `Admin` für Nutzer ab Rolle `author`
+- `Abmelden` mit CSRF-Token
+
+### Topbar
+
+Die Topbar ist fixiert und bewusst reduziert:
+
+- Mobile-Burger-Button
+- Light/Dark-Umschalter
+
+Der Seitentitel steht nicht in der Topbar, sondern im Contentbereich.
+
+### Content
+
+Der Contentbereich besteht aus:
+
+- `.dash-content` als scrollender Bereich
+- `.dash-content-header` mit Seitentitel
+- `.esse-content` als Container für gerenderten Seiteninhalt
+
+Die Scrollleiste sitzt am rechten Rand des Main-Bereichs. Der eigentliche Inhalt ist auf `1200px` begrenzt.
+
+### Footer
+
+Der Footer ist unterhalb des scrollenden Contentbereichs fix im Dashboard-Layout angeordnet:
+
+- Content scrollt zwischen Topbar und Footer
+- Footer bleibt sichtbar unten
+- Footer-Linie ist über `.dash-footer` definiert
+
+## Light/Dark Mode
+
+Das Theme unterstützt nur zwei Modi:
+
+- `light`
+- `dark`
+
+Es gibt keinen Auto-Modus. Dadurch wird vermieden, dass Betriebssystem- oder Browser-Einstellungen ungewollt auf Dark zurückschalten.
+
+Die Auswahl wird in `localStorage` unter `esse-dashboard-theme` gespeichert.
+
+```js
+localStorage.setItem('esse-dashboard-theme', 'light');
+localStorage.setItem('esse-dashboard-theme', 'dark');
 ```
-Seite aufgerufen
-│
-├─ error_code gesetzt → error.php
-│
-├─ Nutzer eingeloggt → layout.php
-│
-└─ Nicht eingeloggt
-   ├─ visibility = "public" → public.php
-   └─ sonst → login.php
-```
 
-**Tipp:** Seiten, die ohne Login erreichbar sein sollen (z. B. Impressum, AGB), einfach auf `visibility = public` setzen.
+Ungültige oder alte Werte wie `auto` fallen auf `light` zurück.
 
----
+## ESSE UI
 
-## Sidebar-Navigation
-
-### Menütypen
-
-| Typ | Verhalten |
-|---|---|
-| Normaler Link | Wird als `<a>` gerendert, mit `active`-Klasse wenn der Slug übereinstimmt |
-| `header` | Wird als Beschriftungszeile (`nav-section`) gerendert, nicht klickbar |
-| Link mit Kindern | Aufklappbares Untermenü (`dash-has-children`) |
-
-### Icons
-
-Jedes Menüelement und jede Seite kann ein `icon`-Feld tragen. Es wird als Bootstrap-Icons-Klasse gerendert:
+Alle Templates laden ESSE UI nach Bootstrap und vor der Theme-CSS:
 
 ```html
-<i class="bi bi-speedometer2"></i>
+<link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
+<link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=...">
 ```
 
-Im Sidebar-Link:
-```php
-<?php if (!empty($item['icon'])): ?>
-<i class="<?= htmlspecialchars($item['icon']) ?>"></i>
-<?php endif ?>
-```
-
-In der Topbar-Überschrift:
-```php
-<?php if (!empty($page['icon'])): ?>
-<i class="<?= htmlspecialchars($page['icon']) ?> me-2"></i>
-<?php endif ?>
-```
-
-### Untermenüs
-
-Menüelemente mit Kindeinträgen werden aufklappbar dargestellt. Das Untermenü öffnet sich automatisch, wenn eines der Kinder aktiv ist. Ein Klick auf einen Eintrag mit echter URL navigiert direkt; nur Einträge mit `href="#"` toggeln das Untermenü.
-
----
-
-## CSS & Design Tokens
-
-Alle Farben und Abstände sind über CSS-Variablen steuerbar:
+`assets/css/esse-dashboard.css` setzt die `--esse-*` Variablen:
 
 ```css
 :root {
-    --sidebar-w:  260px;   /* Breite der Sidebar */
-    --topbar-h:   56px;    /* Höhe der Topbar */
-    --bg:         #0f0f0f; /* Seitenhintergrund */
-    --sidebar-bg: #111318; /* Sidebar- & Topbar-Hintergrund */
-    --card-bg:    #1a1d23; /* Karten-Hintergrund */
-    --border:     #2a2d35; /* Trennlinien */
-    --text:       #dee2e6; /* Fließtext */
-    --muted:      #6c757d; /* Gedämpfter Text */
-    --accent:     #6ea8fe; /* Akzentfarbe (aktiver Sidebar-Link) */
+    --esse-bg: var(--bg);
+    --esse-surface: var(--card-bg);
+    --esse-border: var(--border);
+    --esse-text: var(--text);
+    --esse-text-muted: var(--muted);
+    --esse-radius: .375rem;
+    --esse-primary: var(--accent);
+    --esse-success: #198754;
+    --esse-warning: #ffc107;
+    --esse-danger: #dc3545;
+    --esse-info: #0dcaf0;
 }
 ```
 
-### Hilfsklassen
+Zusätzlich werden zentrale ESSE-UI-Komponenten optisch an das Theme angepasst:
 
-| Klasse | Beschreibung |
-|---|---|
-| `.dash-card` | Einheitliche Karte mit `--card-bg`, Border und abgerundeten Ecken |
-| `.esse-content` | Prosa-Container: Typografie für `h1–h3`, Links, `pre`, `code` |
+- `.esse-panel`
+- `.esse-empty-state`
+- `.esse-panel-header`
+- `.esse-section-title`
+- `.esse-table`
+- `.esse-tabs-btn`
+- `.esse-btn--primary`
 
----
+## ESSE Grid
+
+Das Theme implementiert die verpflichtenden Grid-Klassen für Plugins:
+
+- `.esse-grid-wrap`
+- `.esse-grid`
+- `.esse-grid[data-cols="2"]`
+- `.esse-grid[data-cols="3"]`
+- `.esse-grid[data-cols="4"]`
+- `.esse-grid[data-cols="6"]`
+- `.esse-grid-item`
+
+Auf kleineren Viewports werden 3-, 4- und 6-Spalten-Grids auf zwei Spalten reduziert.
+
+## CSS-Tokens
+
+Wichtige Theme-Variablen:
+
+```css
+:root {
+    --sidebar-w: 260px;
+    --topbar-h: 56px;
+    --bg: #ffffff;
+    --sidebar-bg: #f8f9fa;
+    --topbar-bg: #ffffff;
+    --card-bg: #ffffff;
+    --border: #dee2e6;
+    --text: #212529;
+    --heading: #212529;
+    --muted: #6c757d;
+    --accent: #0d6efd;
+    --nav-hover: #e9ecef;
+    --code-bg: #f8f9fa;
+}
+```
+
+Für Dark Mode werden diese Werte unter `[data-bs-theme="dark"]` überschrieben.
 
 ## Responsive Verhalten
 
-Unterhalb von 992 px (Bootstrap `lg`) wird die Sidebar ausgeblendet und über einen Burger-Button in der Topbar eingeblendet. Ein transparenter Overlay schließt die Sidebar beim Klick daneben.
+Unterhalb von `991px`:
 
-```js
-function toggleSidebar() {
-    document.getElementById('dash-sidebar').classList.toggle('open');
-    document.getElementById('sidebar-overlay').classList.toggle('show');
-}
+- Sidebar ist standardmäßig ausgeblendet
+- Burger-Button in der Topbar öffnet die Sidebar
+- Overlay schließt die Sidebar bei Klick außerhalb
+- Main-Bereich nutzt die volle Breite
+
+## Entwicklung
+
+PHP-Syntax prüfen:
+
+```bash
+php -l Theme.php
+php -l templates/layout.php
+php -l templates/login.php
+php -l templates/public.php
+php -l templates/error.php
 ```
 
----
+Arbeitsbaum prüfen:
 
-## Sidebar-Footer
+```bash
+git status --short
+git diff --stat
+```
 
-Der Sidebar-Footer zeigt für eingeloggte Nutzer den Display-Namen, einen Profil-Link (`/profil`) und einen Abmelden-Button (CSRF-gesichert). Für nicht eingeloggte Nutzer wird ein Anmelden-Link angezeigt.
+## Deployment
 
----
+Für manuelles Deployment müssen mindestens diese Dateien übertragen werden, wenn Layout/CSS geändert wurden:
 
-## Admin-Link in der Topbar
+```text
+assets/css/esse-dashboard.css
+templates/layout.php
+templates/login.php
+templates/public.php
+templates/error.php
+```
 
-Nutzer mit der Rolle `author` oder höher sehen in der Topbar einen „Admin"-Button, der direkt zu `/admin` führt.
+Der produktive Pfad kann je nach Installation abweichen. In der aktuellen Umgebung wurde per SFTP nach folgendem Theme-Verzeichnis deployt:
 
----
+```text
+/home/petereita/web/esse.nfsmw15.de/public_html/themes/esse-dashboard
+```
 
 ## Changelog
 
-### 0.0.1 — 2026-06-03
-- Initiale Version
-- Bootstrap 5 Sidebar/App-Layout
-- Login-, Public- und Error-Templates
-- Responsive Mobile-Sidebar mit Overlay
-- Aufklappbare Untermenüs
-- Icon-Unterstützung für Seiten und Menüeinträge
-- Öffentliche Seiten via `visibility = public` ohne Login erreichbar
+Siehe `CHANGELOG.md`.
