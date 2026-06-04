@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.0.2 - 2026-06-04
 
 - Added ESSE UI stylesheet loading to all templates.
 - Added ESSE UI design tokens and component overrides.
