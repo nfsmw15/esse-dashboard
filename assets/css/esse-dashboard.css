@@ -321,6 +321,15 @@ body {
 .esse-content .btn-primary,
 .esse-content .btn-primary:hover { color: var(--accent); }
 
+.esse-content .btn-secondary {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--muted);
+}
+.esse-content .btn-secondary:hover,
+.esse-content .btn-secondary.active,
+.esse-content .btn-secondary:active { background: var(--nav-hover); color: var(--heading); border-color: var(--border); }
+
 .esse-table {
     color: var(--esse-text);
 }
