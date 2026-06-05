@@ -316,12 +316,12 @@ body {
 }
 
 .esse-btn--primary {
-    background: var(--esse-primary);
-    border-color: var(--esse-primary);
-    color: #fff;
+    background: transparent;
+    border-color: var(--accent);
+    color: var(--accent);
 }
 .esse-content .esse-btn--primary,
-.esse-content .esse-btn--primary:hover { color: #fff; }
+.esse-content .esse-btn--primary:hover { color: var(--accent); }
 
 .esse-table {
     color: var(--esse-text);
