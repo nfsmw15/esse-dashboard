@@ -213,7 +213,6 @@ body {
 }
 
 .dash-content-header {
-    max-width: 1200px;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border);
@@ -226,12 +225,8 @@ body {
     font-weight: 600;
 }
 
-.esse-content {
-    max-width: 1200px;
-}
-
 .dash-footer {
-    width: min(1200px, calc(100% - 3.5rem));
+    width: calc(100% - 3.5rem);
     margin: 0 1.75rem;
     padding: 1rem 0;
     border-top: 1px solid var(--border);
