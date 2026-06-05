@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.6 - 2026-06-06
+
+- Overrode `.btn-primary` in content area to outline style (transparent background, accent border and text) for consistent appearance with ESSE UI buttons.
+- Overrode `.btn-secondary` in content area to outline style (transparent background, muted border and text, hover fills with `--nav-hover`).
+
 ## 0.0.5 - 2026-06-06
 
 - Fixed `.esse-btn--primary`: changed from filled to outline style (transparent background, accent border and text color) for consistent appearance across light and dark mode.

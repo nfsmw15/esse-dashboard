@@ -1,6 +1,6 @@
 {
     "name": "esse-dashboard",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Bootstrap 5 sidebar/app layout theme for dashboards and member areas.",
     "author": "ESSE CMS",
     "class": "EsseDashboard\\Theme",
