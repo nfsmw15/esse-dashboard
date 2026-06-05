@@ -14,7 +14,7 @@ $redirect = $_SERVER['REQUEST_URI'] ?? '/';
     <title><?= htmlspecialchars($siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260604-scrollbar-edge">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack">
     <script>
     (() => {
         const storedTheme = localStorage.getItem('esse-dashboard-theme');
@@ -67,11 +67,11 @@ $redirect = $_SERVER['REQUEST_URI'] ?? '/';
     $groups  = [];
     $current = ['header' => null, 'links' => []];
     foreach ($footMenu as $item) {
-        if ($item['type'] === 'header') {
+        if (($item['type'] ?? '') === 'header') {
             if ($current['header'] !== null || !empty($current['links'])) {
                 $groups[] = $current;
             }
-            $current = ['header' => $item['label'], 'links' => $item['children'] ?? []];
+            $current = ['header' => $item['label'] ?? '', 'links' => $item['children'] ?? []];
         } else {
             $current['links'][] = $item;
         }
@@ -85,18 +85,18 @@ $redirect = $_SERVER['REQUEST_URI'] ?? '/';
         <?php foreach ($groups as $group): ?>
         <div>
             <?php if ($group['header'] !== null): ?>
-            <p class="small fw-semibold mb-1" style="color:var(--heading)"><?= htmlspecialchars($group['header']) ?></p>
+            <p class="small fw-semibold mb-1" style="color:var(--heading)"><?= htmlspecialchars($group['header'] ?? '') ?></p>
             <hr class="border-secondary mt-0 mb-2">
             <?php endif ?>
             <?php foreach ($group['links'] as $link): ?>
-            <?php if ($link['type'] === 'header'): ?>
-            <p class="text-secondary small mb-1" style="font-size:.8rem"><?= htmlspecialchars($link['label']) ?></p>
+            <?php if (($link['type'] ?? '') === 'header'): ?>
+            <p class="text-secondary small mb-1" style="font-size:.8rem"><?= htmlspecialchars($link['label'] ?? '') ?></p>
             <?php else: ?>
             <div>
                 <a href="<?= htmlspecialchars(\Esse\Menu::itemUrl($link)) ?>"
                    class="text-secondary small text-decoration-none"
-                   <?= $link['target'] === '_blank' ? 'target="_blank" rel="noopener"' : '' ?>>
-                    <?= htmlspecialchars($link['label']) ?>
+                   <?= ($link['target'] ?? '') === '_blank' ? 'target="_blank" rel="noopener"' : '' ?>>
+                    <?= htmlspecialchars($link['label'] ?? '') ?>
                 </a>
             </div>
             <?php endif ?>

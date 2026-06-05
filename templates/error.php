@@ -18,7 +18,7 @@ $message = $page['error_message'] ?? '';
     <title><?= $code ?> — <?= htmlspecialchars($siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260604-scrollbar-edge">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack">
     <script>
     (() => {
         const storedTheme = localStorage.getItem('esse-dashboard-theme');
@@ -28,7 +28,7 @@ $message = $page['error_message'] ?? '';
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100">
 <div class="text-center">
-    <div class="display-1 fw-bold" style="color:#2a2d35"><?= $code ?></div>
+    <div class="display-1 fw-bold" style="color:var(--heading)"><?= $code ?></div>
     <h1 class="h3 mb-2"><?= htmlspecialchars($title) ?></h1>
     <p class="text-secondary mb-4"><?= htmlspecialchars($message) ?></p>
     <div class="d-flex gap-2 justify-content-center">

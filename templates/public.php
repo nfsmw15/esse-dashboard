@@ -9,16 +9,28 @@
  * @var array                $footMenu
  * @var \EsseDashboard\Theme  $theme
  */
+$renderIcon = static function (?string $icon, string $class = ''): string {
+    if (empty($icon)) {
+        return '';
+    }
+
+    if (str_contains($icon, ' ')) {
+        return '<i class="' . htmlspecialchars(trim($icon . ' ' . $class)) . '"></i>';
+    }
+
+    $iconHtml = \Esse\Ui::icon(preg_replace('/^(bi|ph|ti|lucide|ri)-/', '', $icon));
+    return $class === '' ? $iconHtml : '<span class="' . htmlspecialchars($class) . '">' . $iconHtml . '</span>';
+};
 ?>
 <!DOCTYPE html>
 <html lang="de" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars($page['title'] . ' — ' . $siteName) ?></title>
+    <title><?= htmlspecialchars(($page['title'] ?? '') . ' — ' . $siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260604-scrollbar-edge">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack">
     <script>
     (() => {
         const storedTheme = localStorage.getItem('esse-dashboard-theme');
@@ -38,12 +50,10 @@
 
 <!-- Content -->
 <main class="container py-5" style="max-width:860px">
-    <?php if (!empty($page['icon']) || $page['title']): ?>
+    <?php if (!empty($page['icon']) || !empty($page['title'])): ?>
     <h1 class="mb-4">
-        <?php if (!empty($page['icon'])): ?>
-        <i class="<?= htmlspecialchars($page['icon']) ?> me-2"></i>
-        <?php endif ?>
-        <?= htmlspecialchars($page['title']) ?>
+        <?= $renderIcon($page['icon'] ?? null, 'me-2') ?>
+        <?= htmlspecialchars($page['title'] ?? '') ?>
     </h1>
     <?php endif ?>
     <div class="esse-content">
@@ -56,9 +66,9 @@
     $groups = [];
     $current = ['header' => null, 'links' => []];
     foreach ($footMenu as $item) {
-        if ($item['type'] === 'header') {
+        if (($item['type'] ?? '') === 'header') {
             if ($current['header'] !== null || !empty($current['links'])) $groups[] = $current;
-            $current = ['header' => $item['label'], 'links' => $item['children'] ?? []];
+            $current = ['header' => $item['label'] ?? '', 'links' => $item['children'] ?? []];
         } else {
             $current['links'][] = $item;
         }
@@ -70,18 +80,18 @@
         <?php foreach ($groups as $group): ?>
         <div>
             <?php if ($group['header'] !== null): ?>
-            <p class="small fw-semibold mb-1" style="color:var(--heading)"><?= htmlspecialchars($group['header']) ?></p>
+            <p class="small fw-semibold mb-1" style="color:var(--heading)"><?= htmlspecialchars($group['header'] ?? '') ?></p>
             <hr class="border-secondary mt-0 mb-2">
             <?php endif ?>
             <?php foreach ($group['links'] as $link): ?>
-            <?php if ($link['type'] === 'header'): ?>
-            <p class="text-secondary small mb-1"><?= htmlspecialchars($link['label']) ?></p>
+            <?php if (($link['type'] ?? '') === 'header'): ?>
+            <p class="text-secondary small mb-1"><?= htmlspecialchars($link['label'] ?? '') ?></p>
             <?php else: ?>
             <div>
                 <a href="<?= htmlspecialchars(\Esse\Menu::itemUrl($link)) ?>"
                    class="text-secondary small text-decoration-none"
-                   <?= $link['target'] === '_blank' ? 'target="_blank" rel="noopener"' : '' ?>>
-                    <?= htmlspecialchars($link['label']) ?>
+                   <?= ($link['target'] ?? '') === '_blank' ? 'target="_blank" rel="noopener"' : '' ?>>
+                    <?= htmlspecialchars($link['label'] ?? '') ?>
                 </a>
             </div>
             <?php endif ?>

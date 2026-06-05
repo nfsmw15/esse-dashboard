@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.3 - 2026-06-05
+
+- Removed theme-side Bootstrap Icons dependency and rely on the CMS-managed active icon pack.
+- Rendered page and theme icons through `\Esse\Ui::icon()` while keeping full CSS classes compatible.
+- Hardened menu template access for missing `type`, `target`, and `label` fields.
+- Replaced hard-coded error-page heading color with a theme token.
+- Updated README to document pack-agnostic icon handling.
+
 ## 0.0.2 - 2026-06-04
 
 - Added ESSE UI stylesheet loading to all templates.

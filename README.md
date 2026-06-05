@@ -2,7 +2,7 @@
 
 Bootstrap-5-Dashboard-Theme für ESSE CMS. Das Theme ist für geschützte Dashboard-, Mitglieder- und App-Bereiche gedacht und bringt Sidebar, Topbar, Login-, Public- und Error-Layouts mit.
 
-**Aktuelle Manifest-Version:** `0.0.2`
+**Aktuelle Manifest-Version:** `0.0.3`
 
 ## Überblick
 
@@ -23,7 +23,7 @@ Nicht angemeldete Nutzer sehen entweder ein Public-Layout oder den Login-Screen.
 - PHP 8.x
 - Bootstrap CSS: `/public/vendor/bootstrap/css/bootstrap.min.css`
 - Bootstrap JS: `/public/vendor/bootstrap/js/bootstrap.bundle.min.js`
-- Bootstrap Icons: `/public/vendor/bootstrap-icons/bootstrap-icons.min.css`
+- Icon-Pack-CSS wird vom ESSE CMS Core geladen
 - ESSE UI: `/public/vendor/esse-ui/esse-ui.css`
 
 ## Installation
@@ -56,7 +56,7 @@ Danach kann das Theme im ESSE Admin aktiviert werden.
 ```json
 {
     "name": "esse-dashboard",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Bootstrap 5 sidebar/app layout theme for dashboards and member areas.",
     "author": "ESSE CMS",
     "class": "EsseDashboard\\Theme",
@@ -99,9 +99,11 @@ Sidebar-Menüs unterstützen:
 - normale Links
 - Header-Einträge mit `type = header`
 - Einträge mit Kindern als aufklappbare Untermenüs
-- Bootstrap-Icon-Klassen über das optionale `icon` Feld
+- Icon-Klassen oder pack-agnostische Icon-Namen über das optionale `icon` Feld
 
-Wenn kein Icon gesetzt ist, rendert das Theme kein Fallback-Icon. Dadurch entstehen keine Platzhalter-Kreise vor Menüeinträgen.
+Wenn kein Icon gesetzt ist, rendert das Theme kein Fallback-Icon. Dadurch entstehen keine Platzhalter-Kreise vor Menüeinträgen. Pack-agnostische Icons werden über `\Esse\Ui::icon()` gerendert; volle CSS-Klassen bleiben aus Kompatibilitätsgründen möglich.
+
+Das Theme bindet kein festes Icon-Pack ein. Die CSS-Datei des aktiven Icon-Packs wird vom ESSE CMS Core geladen.
 
 ## Layout
 
@@ -280,11 +282,7 @@ templates/public.php
 templates/error.php
 ```
 
-Der produktive Pfad kann je nach Installation abweichen. In der aktuellen Umgebung wurde per SFTP nach folgendem Theme-Verzeichnis deployt:
-
-```text
-/home/petereita/web/esse.nfsmw15.de/public_html/themes/esse-dashboard
-```
+Der produktive Pfad hängt von der jeweiligen ESSE-CMS-Installation ab.
 
 ## Changelog
 
