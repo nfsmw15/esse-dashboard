@@ -310,13 +310,16 @@ body {
     color: var(--heading);
 }
 
-.esse-btn--primary {
+.esse-btn--primary,
+.esse-content .btn-primary {
     background: transparent;
     border-color: var(--accent);
     color: var(--accent);
 }
 .esse-content .esse-btn--primary,
-.esse-content .esse-btn--primary:hover { color: var(--accent); }
+.esse-content .esse-btn--primary:hover,
+.esse-content .btn-primary,
+.esse-content .btn-primary:hover { color: var(--accent); }
 
 .esse-table {
     color: var(--esse-text);
