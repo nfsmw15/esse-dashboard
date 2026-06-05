@@ -2,7 +2,7 @@
 
 Bootstrap-5-Dashboard-Theme für ESSE CMS. Das Theme ist für geschützte Dashboard-, Mitglieder- und App-Bereiche gedacht und bringt Sidebar, Topbar, Login-, Public- und Error-Layouts mit.
 
-**Aktuelle Manifest-Version:** `0.0.3`
+**Aktuelle Manifest-Version:** `0.0.4`
 
 ## Überblick
 
@@ -56,7 +56,7 @@ Danach kann das Theme im ESSE Admin aktiviert werden.
 ```json
 {
     "name": "esse-dashboard",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Bootstrap 5 sidebar/app layout theme for dashboards and member areas.",
     "author": "ESSE CMS",
     "class": "EsseDashboard\\Theme",
@@ -168,10 +168,11 @@ Ungültige oder alte Werte wie `auto` fallen auf `light` zurück.
 
 ## ESSE UI
 
-Alle Templates laden ESSE UI nach Bootstrap und vor der Theme-CSS:
+Alle Templates laden das aktive Icon-Pack und ESSE UI nach Bootstrap und vor der Theme-CSS:
 
 ```html
 <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
 <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
 <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=...">
 ```

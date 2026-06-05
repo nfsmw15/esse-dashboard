@@ -2,6 +2,7 @@
 /**
  * @var string               $siteName
  * @var array                $footMenu
+ * @var string               $iconPackCss
  * @var \EsseDashboard\Theme  $theme
  */
 $redirect = $_SERVER['REQUEST_URI'] ?? '/';
@@ -13,8 +14,9 @@ $redirect = $_SERVER['REQUEST_URI'] ?? '/';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack-css">
     <script>
     (() => {
         const storedTheme = localStorage.getItem('esse-dashboard-theme');

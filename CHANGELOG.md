@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4 - 2026-06-05
+
+- Added active icon-pack stylesheet loading to theme templates so `\Esse\Ui::icon()` output is visible in frontend layouts.
+
 ## 0.0.3 - 2026-06-05
 
 - Removed theme-side Bootstrap Icons dependency and rely on the CMS-managed active icon pack.

@@ -4,6 +4,7 @@
  * @var string               $content
  * @var string               $siteName
  * @var array                $sidebarMenu
+ * @var string               $iconPackCss
  * @var \EsseDashboard\Theme  $theme
  */
 $code    = (int) ($page['error_code'] ?? 404);
@@ -17,8 +18,9 @@ $message = $page['error_message'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= $code ?> — <?= htmlspecialchars($siteName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack-css">
     <script>
     (() => {
         const storedTheme = localStorage.getItem('esse-dashboard-theme');
