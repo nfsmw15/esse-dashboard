@@ -280,8 +280,17 @@ body {
     border-color: var(--border);
 }
 
-.esse-content .table tbody tr:hover {
+.esse-content .table tbody tr:hover,
+.esse-content .esse-table tbody tr:hover {
     background: var(--nav-hover);
+}
+
+.esse-content .esse-table--striped tbody tr:nth-child(even) {
+    background: var(--nav-hover);
+}
+
+[data-bs-theme="light"] .esse-content .esse-table tbody tr:hover {
+    background: #d8dde4;
 }
 
 .esse-content .form-control,
@@ -309,7 +318,10 @@ body {
 .esse-btn--primary {
     background: var(--esse-primary);
     border-color: var(--esse-primary);
+    color: #fff;
 }
+.esse-content .esse-btn--primary,
+.esse-content .esse-btn--primary:hover { color: #fff; }
 
 .esse-table {
     color: var(--esse-text);
