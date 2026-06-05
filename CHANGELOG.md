@@ -1,12 +1,16 @@
 # Changelog
 
-## 0.0.4 - 2026-06-05
+## 0.0.5 - 2026-06-06
 
-- Added active icon-pack stylesheet loading to theme templates so `\Esse\Ui::icon()` output is visible in frontend layouts.
-- Fixed `.esse-btn--primary` text color: `.esse-content a` selector was winning specificity (0,1,1) and rendering accent-colored text on accent-colored buttons; added `color: #fff` and a scoped override to enforce white label in both modes.
+- Fixed `.esse-btn--primary`: changed from filled to outline style (transparent background, accent border and text color) for consistent appearance across light and dark mode.
 - Fixed `.esse-table` hover: corrected selector from `.table` (Bootstrap class) to `.esse-table` so row hover actually fires on plugin tables.
 - Fixed `.esse-table--striped` alternating row background.
 - Fixed Light-Mode `.esse-table` hover visibility: `#d8dde4` instead of `#e9ecef` for sufficient contrast on white surface.
+- Removed `max-width: 1200px` cap from content area so it fills the available width without horizontal scrolling.
+
+## 0.0.4 - 2026-06-05
+
+- Added active icon-pack stylesheet loading to theme templates so `\Esse\Ui::icon()` output is visible in frontend layouts.
 
 ## 0.0.3 - 2026-06-05
 
