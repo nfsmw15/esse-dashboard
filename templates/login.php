@@ -1,23 +1,26 @@
 <?php
 /**
- * Standalone layout for guest-only pages (login, register, password reset, …).
- * No sidebar — minimal topbar, centered content, footer.
+ * Theme-rendered /login page (auth.login.render hook).
+ * No sidebar — minimal topbar, centered card, footer.
  *
- * @var array                $page
- * @var string               $content
- * @var string               $siteName
- * @var array                $footMenu
+ * Auth logic (CSRF, rate-limiting, Auth::attempt(), redirect resolution)
+ * stays in admin/login.php — this template only renders the form.
+ *
+ * @var array                $data
  * @var string               $iconPackCss
  * @var \EsseDashboard\Theme $theme
  */
-$renderIcon = [$theme, 'renderIcon'];
+$renderIcon  = [$theme, 'renderIcon'];
+$brandName   = $data['brandName']   ?? 'ESSE CMS';
+$brandSlogan = $data['brandSlogan'] ?? '';
+$footMenu    = $data['footMenu']    ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="de" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars(($page['title'] ?? '') . ' — ' . $siteName) ?></title>
+    <title><?= htmlspecialchars('Login — ' . $brandName) ?></title>
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
@@ -34,7 +37,7 @@ $renderIcon = [$theme, 'renderIcon'];
 <!-- Minimal topbar -->
 <nav style="background:var(--sidebar-bg);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between">
     <a href="/" class="text-decoration-none fw-bold" style="color:var(--heading)">
-        <?= $renderIcon('grid-1x2-fill', 'me-2') ?><?= htmlspecialchars($siteName) ?>
+        <?= $renderIcon('grid-1x2-fill', 'me-2') ?><?= htmlspecialchars($brandName) ?>
     </a>
     <div class="dropdown">
         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,11 +53,41 @@ $renderIcon = [$theme, 'renderIcon'];
 <!-- Content -->
 <main class="flex-fill d-flex align-items-center justify-content-center px-3 py-5">
     <div style="width:100%;max-width:440px">
-        <h1 class="h4 fw-bold text-center mb-4" style="color:var(--heading)">
-            <?= $renderIcon('grid-1x2-fill', 'me-2') ?><?= htmlspecialchars($siteName) ?>
-        </h1>
+        <div class="text-center mb-4">
+            <h1 class="h4 fw-bold mb-0" style="color:var(--heading)">
+                <?= $renderIcon('grid-1x2-fill', 'me-2') ?><?= htmlspecialchars($brandName) ?>
+            </h1>
+            <?php if ($brandSlogan !== ''): ?>
+            <small class="text-secondary"><?= htmlspecialchars($brandSlogan) ?></small>
+            <?php endif ?>
+        </div>
+
+        <?php if (!empty($data['error'])): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($data['error']) ?></div>
+        <?php endif ?>
+
         <div class="dash-card esse-content esse-content--standalone">
-            <?= $content ?>
+            <form method="post" action="/login">
+                <input type="hidden" name="_csrf"    value="<?= htmlspecialchars($data['csrfToken'] ?? '') ?>">
+                <input type="hidden" name="_form"    value="admin_login">
+                <input type="hidden" name="redirect" value="<?= htmlspecialchars($data['redirect'] ?? '') ?>">
+                <div class="mb-3">
+                    <label class="form-label">E-Mail</label>
+                    <input type="email" name="login" class="form-control" autocomplete="username" autofocus required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Passwort</label>
+                    <input type="password" name="password" class="form-control" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Anmelden</button>
+            </form>
+        </div>
+
+        <div class="text-center mt-3 d-flex justify-content-center gap-3">
+            <a href="/admin/forgot-password" class="text-secondary small text-decoration-none">Passwort vergessen?</a>
+            <?php if (!empty($data['registrationEnabled'])): ?>
+            <a href="/registrieren" class="text-secondary small text-decoration-none">Registrieren</a>
+            <?php endif ?>
         </div>
     </div>
 </main>

@@ -256,6 +256,13 @@ body {
     padding: 1.25rem;
 }
 
+/* Auth pages (login, register, …) share /login's dark card palette
+   so the standalone layout matches the CMS's own auth screens. */
+.esse-content--standalone.dash-card {
+    background: #1a1a1a;
+    border-color: #2d2d2d;
+}
+
 .esse-content .card {
     background: var(--card-bg);
     border-color: var(--border);
@@ -293,6 +300,14 @@ body {
     color: var(--text);
     background: var(--bg);
     border-color: var(--border);
+}
+
+/* Standalone pages (login, register, …) are already narrow themselves —
+   ignore any grid columns the rendered form brings along so its fields
+   fill the available card width instead of shrinking further. */
+.esse-content--standalone .row > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
 }
 
 /* ── ESSE UI plugin surface ── */

@@ -3,6 +3,7 @@
  * @var array               $page
  * @var string              $content
  * @var string              $siteName
+ * @var string              $siteSlogan
  * @var array               $sidebarMenu
  * @var array               $footMenu
  * @var string              $iconPackCss
@@ -21,7 +22,7 @@ $renderIcon  = [$theme, 'renderIcon'];
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260605-iconpack-css">
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260607-standalone-card">
     <script>
     (() => {
         const storedTheme = localStorage.getItem('esse-dashboard-theme');
@@ -40,7 +41,9 @@ $renderIcon  = [$theme, 'renderIcon'];
         <a href="/" class="text-decoration-none">
             <?= $renderIcon('grid-1x2-fill', 'me-2') ?><?= htmlspecialchars($siteName) ?>
         </a>
-        <small>forge your web.</small>
+        <?php if ($siteSlogan !== ''): ?>
+        <small><?= htmlspecialchars($siteSlogan) ?></small>
+        <?php endif ?>
     </div>
 
     <nav class="nav flex-column">

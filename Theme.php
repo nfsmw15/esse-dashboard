@@ -19,11 +19,13 @@ class Theme extends \Esse\Theme
         $this->settings = array_column($rows, 'value', 'key');
 
         Hooks::on('page.render', [$this, 'renderPage']);
+        Hooks::on('auth.login.render', [$this, 'renderLogin']);
     }
 
     public function renderPage(array $page, string $content): void
     {
-        $siteName    = $this->settings['site_name'] ?? 'ESSE CMS';
+        $siteName    = $this->settings['site_name']   ?? 'ESSE CMS';
+        $siteSlogan  = $this->settings['site_slogan'] ?? '';
         $sidebarSlug = $this->settings['theme_esse-dashboard_menu_sidebar'] ?? 'sidebar';
         $footSlug    = $this->settings['theme_esse-dashboard_menu_footer']  ?? 'footer';
         $footMenu    = $footSlug ? Menu::get($footSlug) : [];
@@ -44,6 +46,13 @@ class Theme extends \Esse\Theme
 
         $sidebarMenu = Menu::get($sidebarSlug);
         require $this->basePath('templates/layout.php');
+    }
+
+    public function renderLogin(array $data): void
+    {
+        $iconPackCss = $this->activeIconPackCssUrl();
+        $theme       = $this;
+        require $this->basePath('templates/login.php');
     }
 
     public function renderIcon(?string $icon, string $class = ''): string

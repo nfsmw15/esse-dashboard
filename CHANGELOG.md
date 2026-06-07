@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.7 - 2026-06-07
+
+- Removed redundant/outdated `Auth::check()` visibility branching from `Theme.php::renderPage()` — the CMS core already gates page access centrally before firing `page.render`, so the theme renders content directly like `esse-base`.
+- Added a standalone layout (`templates/standalone.php`, replacing `templates/public.php`) for `guest_only` pages (registration, password reset, …) without the dashboard sidebar/chrome — minimal topbar, centered card, footer.
+- Removed obsolete `templates/login.php` (old auth-check fallback) and `templates/public.php`.
+- Added theme-rendered `/login` page via the new `auth.login.render` hook (`Theme::renderLogin()`, new `templates/login.php`) so the login screen matches the dashboard's design (light/dark mode, branding, footer) instead of the CMS admin look. `/admin/login` remains on the standard rendering as fail-safe.
+- Added configurable `site_slogan` setting support: `Theme.php` now loads `site_slogan` alongside `site_name` and passes it to `templates/layout.php`, where it replaces the hard-coded "forge your web." sidebar tagline (hidden when empty).
+
 ## 0.0.6 - 2026-06-06
 
 - Overrode `.btn-primary` in content area to outline style (transparent background, accent border and text) for consistent appearance with ESSE UI buttons.
