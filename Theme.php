@@ -20,6 +20,8 @@ class Theme extends \Esse\Theme
 
         Hooks::on('page.render', [$this, 'renderPage']);
         Hooks::on('auth.login.render', [$this, 'renderLogin']);
+        Hooks::on('auth.forgot_password.render', [$this, 'renderForgotPassword']);
+        Hooks::on('auth.reset_password.render', [$this, 'renderResetPassword']);
     }
 
     public function renderPage(array $page, string $content): void
@@ -55,6 +57,22 @@ class Theme extends \Esse\Theme
         require $this->basePath('templates/login.php');
     }
 
+    public function renderForgotPassword(array $data): void
+    {
+        $footMenu    = $this->footerMenu();
+        $iconPackCss = $this->activeIconPackCssUrl();
+        $theme       = $this;
+        require $this->basePath('templates/forgot-password.php');
+    }
+
+    public function renderResetPassword(array $data): void
+    {
+        $footMenu    = $this->footerMenu();
+        $iconPackCss = $this->activeIconPackCssUrl();
+        $theme       = $this;
+        require $this->basePath('templates/reset-password.php');
+    }
+
     public function renderIcon(?string $icon, string $class = ''): string
     {
         if (empty($icon)) {
@@ -67,6 +85,12 @@ class Theme extends \Esse\Theme
 
         $iconHtml = \Esse\Ui::icon(preg_replace('/^(bi|ph|ti|lucide|ri)-/', '', $icon));
         return $class === '' ? $iconHtml : '<span class="' . htmlspecialchars($class) . '">' . $iconHtml . '</span>';
+    }
+
+    private function footerMenu(): array
+    {
+        $footSlug = $this->settings['theme_esse-dashboard_menu_footer'] ?? 'footer';
+        return $footSlug ? Menu::get($footSlug) : [];
     }
 
     private function activeIconPackCssUrl(): string

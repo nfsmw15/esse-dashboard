@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.8 - 2026-06-07
+
+- Added theme-rendered "Passwort vergessen" and "Neues Passwort setzen" pages via the new `auth.forgot_password.render` / `auth.reset_password.render` hooks (`Theme::renderForgotPassword()` / `Theme::renderResetPassword()`, new `templates/forgot-password.php` / `templates/reset-password.php`), matching the dashboard's design (light/dark mode, branding, footer) instead of the CMS admin look. Unlike `/login`, these pages have no fail-safe alias — auth/mail/token logic stays entirely in `admin/forgot-password.php` / `admin/reset-password.php`.
+
 ## 0.0.7 - 2026-06-07
 
 - Removed redundant/outdated `Auth::check()` visibility branching from `Theme.php::renderPage()` — the CMS core already gates page access centrally before firing `page.render`, so the theme renders content directly like `esse-base`.
