@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added the "Mit Passkey anmelden" button (passwordless WebAuthn/Passkey login) to the theme-rendered `/login` page (`templates/login.php`), mirroring the markup and `webauthn.js` wiring of the CMS standard login so passkey support works consistently on both `/login` and `/admin/login` — the button only appears when the browser supports `PublicKeyCredential` (feature detection, same as the CMS core).
+
 ## 0.0.8 - 2026-06-07
 
 - Added theme-rendered "Passwort vergessen" and "Neues Passwort setzen" pages via the new `auth.forgot_password.render` / `auth.reset_password.render` hooks (`Theme::renderForgotPassword()` / `Theme::renderResetPassword()`, new `templates/forgot-password.php` / `templates/reset-password.php`), matching the dashboard's design (light/dark mode, branding, footer) instead of the CMS admin look. Unlike `/login`, these pages have no fail-safe alias — auth/mail/token logic stays entirely in `admin/forgot-password.php` / `admin/reset-password.php`.

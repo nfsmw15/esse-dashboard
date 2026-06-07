@@ -81,6 +81,18 @@ $footMenu    = $data['footMenu']    ?? [];
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Anmelden</button>
             </form>
+
+            <div class="d-none mt-3" id="passkey-login-block">
+                <div class="d-flex align-items-center my-3">
+                    <hr class="border-secondary flex-grow-1 my-0">
+                    <span class="text-secondary small mx-2">oder</span>
+                    <hr class="border-secondary flex-grow-1 my-0">
+                </div>
+                <button type="button" id="passkey-login-btn" class="btn btn-outline-secondary w-100">
+                    <?= $renderIcon('fingerprint', 'me-1') ?>Mit Passkey anmelden
+                </button>
+                <div class="text-danger small mt-2 d-none" id="passkey-login-error"></div>
+            </div>
         </div>
 
         <div class="text-center mt-3 d-flex justify-content-center gap-3">
@@ -152,6 +164,32 @@ $footMenu    = $data['footMenu']    ?? [];
     setTheme(storedTheme);
     document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
         button.addEventListener('click', () => setTheme(button.getAttribute('data-bs-theme-value')));
+    });
+})();
+</script>
+<script src="/public/assets/js/webauthn.js"></script>
+<script>
+(function () {
+    const btn   = document.getElementById('passkey-login-btn');
+    const block = document.getElementById('passkey-login-block');
+    const error = document.getElementById('passkey-login-error');
+    if (!btn || !block || !window.EsseWebAuthn || !EsseWebAuthn.isSupported()) return;
+
+    block.classList.remove('d-none');
+
+    btn.addEventListener('click', async function () {
+        error.classList.add('d-none');
+        btn.disabled = true;
+        btn.textContent = 'Warte auf Passkey …';
+        try {
+            const result = await EsseWebAuthn.login(<?= json_encode($data['csrfToken'] ?? '') ?>, <?= json_encode($data['redirect'] ?? '') ?>);
+            window.location.href = result.redirect || '/';
+        } catch (e) {
+            error.textContent = e.message || 'Anmeldung mit Passkey fehlgeschlagen.';
+            error.classList.remove('d-none');
+            btn.disabled = false;
+            btn.innerHTML = '<?= $renderIcon('fingerprint', 'me-1') ?>Mit Passkey anmelden';
+        }
     });
 })();
 </script>
