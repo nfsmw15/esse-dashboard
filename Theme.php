@@ -35,21 +35,29 @@ class Theme extends \Esse\Theme
             return;
         }
 
-        // Not logged in
-        if (!\Esse\Auth::check()) {
-            // Respect the page's visibility setting:
-            // 'public' → show content (uses minimal layout without sidebar)
-            // 'members', 'admin' or anything else → show login
-            if (($page['visibility'] ?? '') === 'public' && empty($page['error_code'])) {
-                require $this->basePath('templates/public.php');
-                return;
-            }
-            require $this->basePath('templates/login.php');
+        // Guest-only pages (login, register, password reset, …) get a
+        // standalone layout without the dashboard sidebar/chrome.
+        if (($page['visibility'] ?? '') === 'guest_only') {
+            require $this->basePath('templates/standalone.php');
             return;
         }
 
         $sidebarMenu = Menu::get($sidebarSlug);
         require $this->basePath('templates/layout.php');
+    }
+
+    public function renderIcon(?string $icon, string $class = ''): string
+    {
+        if (empty($icon)) {
+            return '';
+        }
+
+        if (str_contains($icon, ' ')) {
+            return '<i class="' . htmlspecialchars(trim($icon . ' ' . $class)) . '"></i>';
+        }
+
+        $iconHtml = \Esse\Ui::icon(preg_replace('/^(bi|ph|ti|lucide|ri)-/', '', $icon));
+        return $class === '' ? $iconHtml : '<span class="' . htmlspecialchars($class) . '">' . $iconHtml . '</span>';
     }
 
     private function activeIconPackCssUrl(): string

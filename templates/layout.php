@@ -10,18 +10,7 @@
  */
 
 $currentSlug = $page['slug'] ?? '';
-$renderIcon = static function (?string $icon, string $class = ''): string {
-    if (empty($icon)) {
-        return '';
-    }
-
-    if (str_contains($icon, ' ')) {
-        return '<i class="' . htmlspecialchars(trim($icon . ' ' . $class)) . '"></i>';
-    }
-
-    $iconHtml = \Esse\Ui::icon(preg_replace('/^(bi|ph|ti|lucide|ri)-/', '', $icon));
-    return $class === '' ? $iconHtml : '<span class="' . htmlspecialchars($class) . '">' . $iconHtml . '</span>';
-};
+$renderIcon  = [$theme, 'renderIcon'];
 ?>
 <!DOCTYPE html>
 <html lang="de" data-bs-theme="light">
