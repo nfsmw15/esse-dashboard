@@ -24,13 +24,8 @@ $footMenu    = $data['footMenu']    ?? [];
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260607-standalone-card">
-    <script>
-    (() => {
-        const storedTheme = localStorage.getItem('esse-dashboard-theme');
-        document.documentElement.setAttribute('data-bs-theme', storedTheme === 'dark' ? 'dark' : 'light');
-    })();
-    </script>
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260608-inline-js-light-card">
+    <script src="<?= $theme->assetUrl('js/theme-init.js') ?>?v=20260608-inline-js-light-card"></script>
 </head>
 <body class="d-flex flex-column min-vh-100" style="background:var(--bg)">
 
@@ -88,7 +83,9 @@ $footMenu    = $data['footMenu']    ?? [];
                     <span class="text-secondary small mx-2">oder</span>
                     <hr class="border-secondary flex-grow-1 my-0">
                 </div>
-                <button type="button" id="passkey-login-btn" class="btn btn-outline-secondary w-100">
+                <button type="button" id="passkey-login-btn" class="btn btn-outline-secondary w-100"
+                        data-csrf-token="<?= htmlspecialchars($data['csrfToken'] ?? '') ?>"
+                        data-redirect="<?= htmlspecialchars($data['redirect'] ?? '') ?>">
                     <?= $renderIcon('fingerprint', 'me-1') ?>Mit Passkey anmelden
                 </button>
                 <div class="text-danger small mt-2 d-none" id="passkey-login-error"></div>
@@ -146,52 +143,8 @@ $footMenu    = $data['footMenu']    ?? [];
 <?php endif ?>
 
 <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script>
-(() => {
-    const storedTheme = localStorage.getItem('esse-dashboard-theme') === 'dark' ? 'dark' : 'light';
-    const setTheme = theme => {
-        theme = theme === 'dark' ? 'dark' : 'light';
-        localStorage.setItem('esse-dashboard-theme', theme);
-        document.documentElement.setAttribute('data-bs-theme', theme);
-        document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-            button.classList.toggle('active', button.getAttribute('data-bs-theme-value') === theme);
-        });
-        const activeIcon = document.querySelector(`[data-bs-theme-value="${theme}"] i`);
-        const themeIcon = document.querySelector('.theme-icon-active');
-        if (activeIcon && themeIcon) themeIcon.innerHTML = activeIcon.outerHTML;
-    };
-
-    setTheme(storedTheme);
-    document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-        button.addEventListener('click', () => setTheme(button.getAttribute('data-bs-theme-value')));
-    });
-})();
-</script>
+<script src="<?= $theme->assetUrl('js/esse-dashboard.js') ?>?v=20260608-inline-js-light-card"></script>
 <script src="/public/assets/js/webauthn.js"></script>
-<script>
-(function () {
-    const btn   = document.getElementById('passkey-login-btn');
-    const block = document.getElementById('passkey-login-block');
-    const error = document.getElementById('passkey-login-error');
-    if (!btn || !block || !window.EsseWebAuthn || !EsseWebAuthn.isSupported()) return;
-
-    block.classList.remove('d-none');
-
-    btn.addEventListener('click', async function () {
-        error.classList.add('d-none');
-        btn.disabled = true;
-        btn.textContent = 'Warte auf Passkey …';
-        try {
-            const result = await EsseWebAuthn.login(<?= json_encode($data['csrfToken'] ?? '') ?>, <?= json_encode($data['redirect'] ?? '') ?>);
-            window.location.href = result.redirect || '/';
-        } catch (e) {
-            error.textContent = e.message || 'Anmeldung mit Passkey fehlgeschlagen.';
-            error.classList.remove('d-none');
-            btn.disabled = false;
-            btn.innerHTML = '<?= $renderIcon('fingerprint', 'me-1') ?>Mit Passkey anmelden';
-        }
-    });
-})();
-</script>
+<script src="<?= $theme->assetUrl('js/login.js') ?>?v=20260608-inline-js-light-card"></script>
 </body>
 </html>

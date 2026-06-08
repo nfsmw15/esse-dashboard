@@ -24,13 +24,8 @@ $brandSlogan = $data['brandSlogan'] ?? '';
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260607-standalone-card">
-    <script>
-    (() => {
-        const storedTheme = localStorage.getItem('esse-dashboard-theme');
-        document.documentElement.setAttribute('data-bs-theme', storedTheme === 'dark' ? 'dark' : 'light');
-    })();
-    </script>
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260608-inline-js-light-card">
+    <script src="<?= $theme->assetUrl('js/theme-init.js') ?>?v=20260608-inline-js-light-card"></script>
 </head>
 <body class="d-flex flex-column min-vh-100" style="background:var(--bg)">
 
@@ -150,26 +145,6 @@ $brandSlogan = $data['brandSlogan'] ?? '';
 <?php endif ?>
 
 <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script>
-(() => {
-    const storedTheme = localStorage.getItem('esse-dashboard-theme') === 'dark' ? 'dark' : 'light';
-    const setTheme = theme => {
-        theme = theme === 'dark' ? 'dark' : 'light';
-        localStorage.setItem('esse-dashboard-theme', theme);
-        document.documentElement.setAttribute('data-bs-theme', theme);
-        document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-            button.classList.toggle('active', button.getAttribute('data-bs-theme-value') === theme);
-        });
-        const activeIcon = document.querySelector(`[data-bs-theme-value="${theme}"] i`);
-        const themeIcon = document.querySelector('.theme-icon-active');
-        if (activeIcon && themeIcon) themeIcon.innerHTML = activeIcon.outerHTML;
-    };
-
-    setTheme(storedTheme);
-    document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-        button.addEventListener('click', () => setTheme(button.getAttribute('data-bs-theme-value')));
-    });
-})();
-</script>
+<script src="<?= $theme->assetUrl('js/esse-dashboard.js') ?>?v=20260608-inline-js-light-card"></script>
 </body>
 </html>

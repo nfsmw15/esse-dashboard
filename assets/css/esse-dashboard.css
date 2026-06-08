@@ -256,11 +256,9 @@ body {
     padding: 1.25rem;
 }
 
-/* Auth pages (login, register, …) share /login's dark card palette
-   so the standalone layout matches the CMS's own auth screens. */
 .esse-content--standalone.dash-card {
-    background: #1a1a1a;
-    border-color: #2d2d2d;
+    background: var(--card-bg);
+    border-color: var(--border);
 }
 
 .esse-content .card {

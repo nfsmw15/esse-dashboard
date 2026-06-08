@@ -22,18 +22,13 @@ $renderIcon  = [$theme, 'renderIcon'];
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260607-standalone-card">
-    <script>
-    (() => {
-        const storedTheme = localStorage.getItem('esse-dashboard-theme');
-        document.documentElement.setAttribute('data-bs-theme', storedTheme === 'dark' ? 'dark' : 'light');
-    })();
-    </script>
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260608-inline-js-light-card">
+    <script src="<?= $theme->assetUrl('js/theme-init.js') ?>?v=20260608-inline-js-light-card"></script>
 </head>
 <body>
 
 <!-- Mobile overlay -->
-<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div id="sidebar-overlay" data-sidebar-toggle></div>
 
 <!-- ── Sidebar ── -->
 <div id="dash-sidebar">
@@ -68,7 +63,7 @@ $renderIcon  = [$theme, 'renderIcon'];
             <div class="dash-has-children <?= $isActive ? 'open' : '' ?>">
                 <a href="<?= htmlspecialchars($url) ?>"
                    class="nav-link <?= $isActive ? 'active' : '' ?>"
-                   onclick="toggleSubMenu(event, this.parentElement)"
+                   data-submenu-toggle
                    <?= ($item['target'] ?? '') === '_blank' ? 'target="_blank" rel="noopener"' : '' ?>>
                     <?= $renderIcon($item['icon'] ?? null) ?>
                     <span><?= htmlspecialchars($item['label'] ?? '') ?></span>
@@ -136,7 +131,7 @@ $renderIcon  = [$theme, 'renderIcon'];
 <!-- ── Topbar ── -->
 <div id="dash-topbar">
     <div class="d-flex align-items-center gap-3">
-        <button class="btn btn-link p-0 text-secondary d-lg-none" onclick="toggleSidebar()" style="font-size:1.2rem">
+        <button class="btn btn-link p-0 text-secondary d-lg-none" type="button" data-sidebar-toggle style="font-size:1.2rem">
             <?= $renderIcon('list') ?>
         </button>
     </div>
@@ -187,42 +182,6 @@ $renderIcon  = [$theme, 'renderIcon'];
 </div>
 
 <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script>
-function toggleSidebar() {
-    document.getElementById('dash-sidebar').classList.toggle('open');
-    document.getElementById('sidebar-overlay').classList.toggle('show');
-}
-
-function toggleSubMenu(e, el) {
-    e.preventDefault();
-    el.classList.toggle('open');
-}
-
-document.querySelectorAll('.dash-has-children').forEach(el => {
-    if (el.querySelector('.dash-sub a.active')) {
-        el.classList.add('open');
-    }
-});
-
-(() => {
-    const storedTheme = localStorage.getItem('esse-dashboard-theme') === 'dark' ? 'dark' : 'light';
-    const setTheme = theme => {
-        theme = theme === 'dark' ? 'dark' : 'light';
-        localStorage.setItem('esse-dashboard-theme', theme);
-        document.documentElement.setAttribute('data-bs-theme', theme);
-        document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-            button.classList.toggle('active', button.getAttribute('data-bs-theme-value') === theme);
-        });
-        const activeIcon = document.querySelector(`[data-bs-theme-value="${theme}"] i`);
-        const themeIcon = document.querySelector('.theme-icon-active');
-        if (activeIcon && themeIcon) themeIcon.innerHTML = activeIcon.outerHTML;
-    };
-
-    setTheme(storedTheme);
-    document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-        button.addEventListener('click', () => setTheme(button.getAttribute('data-bs-theme-value')));
-    });
-})();
-</script>
+<script src="<?= $theme->assetUrl('js/esse-dashboard.js') ?>?v=20260608-inline-js-light-card"></script>
 </body>
 </html>

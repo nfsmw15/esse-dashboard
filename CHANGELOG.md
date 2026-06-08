@@ -1,8 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.0.9 - 2026-06-08
 
 - Added the "Mit Passkey anmelden" button (passwordless WebAuthn/Passkey login) to the theme-rendered `/login` page (`templates/login.php`), mirroring the markup and `webauthn.js` wiring of the CMS standard login so passkey support works consistently on both `/login` and `/admin/login` — the button only appears when the browser supports `PublicKeyCredential` (feature detection, same as the CMS core).
+- Moved theme JavaScript out of templates into `assets/js/theme-init.js`, `assets/js/esse-dashboard.js`, and `assets/js/login.js`, replacing inline scripts, inline event handlers, and `javascript:` links with external assets and `data-*` hooks.
+- Fixed standalone auth cards in light mode (`/login`, `/admin/forgot-password`, `/registrieren`, and other `guest_only` pages) by restoring token-based card background/border colors instead of forcing the dark palette.
 
 ## 0.0.8 - 2026-06-07
 

@@ -43,8 +43,12 @@ themes/
     ├── CHANGELOG.md
     ├── LICENSE
     ├── assets/
-    │   └── css/
-    │       └── esse-dashboard.css
+    │   ├── css/
+    │   │   └── esse-dashboard.css
+    │   └── js/
+    │       ├── esse-dashboard.js
+    │       ├── login.js
+    │       └── theme-init.js
     └── templates/
         ├── error.php
         ├── layout.php
@@ -63,7 +67,7 @@ Danach kann das Theme im ESSE Admin aktiviert werden.
 ```json
 {
     "name": "esse-dashboard",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "Bootstrap 5 sidebar/app layout theme for dashboards and member areas.",
     "author": "ESSE CMS",
     "class": "EsseDashboard\\Theme",
@@ -210,6 +214,11 @@ Zusätzlich passt das Theme zentrale ESSE-UI- und Bootstrap-Komponenten optisch 
 Das Theme unterstützt nur zwei Modi — `light` und `dark`, **kein** Auto-Modus, damit
 Betriebssystem-/Browser-Einstellungen nicht ungewollt auf Dark zurückschalten.
 
+Die frühe Initialisierung liegt in `assets/js/theme-init.js` und wird im `<head>`
+geladen, damit die gespeicherte Auswahl vor dem ersten Rendern auf
+`data-bs-theme` gesetzt wird. Die Dropdown-Interaktion und die aktive Icon-Anzeige
+liegen in `assets/js/esse-dashboard.js`.
+
 Die Auswahl wird in `localStorage` unter `esse-dashboard-theme` gespeichert:
 
 ```js
@@ -244,6 +253,11 @@ Alle Templates laden Icon-Pack-CSS und ESSE UI nach Bootstrap und vor der Theme-
 <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=...">
 ```
 
+Theme-eigene JavaScript-Logik wird ausschließlich über Dateien aus `assets/js/`
+eingebunden. Templates enthalten keine Inline-Skripte und keine Inline-Eventhandler.
+Seitenspezifische Auth-Interaktion wie der Passkey-Button auf `/login` liegt in
+`assets/js/login.js`; dynamische Daten werden als `data-*`-Attribute übergeben.
+
 Page- und Theme-Icons werden pack-agnostisch über `Theme::renderIcon()` /
 `\Esse\Ui::icon()` gerendert; volle CSS-Klassen (z. B. `bi bi-house`) bleiben als
 Fallback kompatibel.
@@ -269,6 +283,7 @@ Layout/CSS geändert wurden:
 
 ```text
 assets/css/esse-dashboard.css
+assets/js/*.js
 templates/*.php
 Theme.php
 ```

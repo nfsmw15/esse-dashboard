@@ -20,13 +20,8 @@ $message = $page['error_message'] ?? '';
     <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= htmlspecialchars($iconPackCss) ?>">
     <link rel="stylesheet" href="/public/vendor/esse-ui/esse-ui.css">
-    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260607-standalone-card">
-    <script>
-    (() => {
-        const storedTheme = localStorage.getItem('esse-dashboard-theme');
-        document.documentElement.setAttribute('data-bs-theme', storedTheme === 'dark' ? 'dark' : 'light');
-    })();
-    </script>
+    <link rel="stylesheet" href="<?= $theme->assetUrl('css/esse-dashboard.css') ?>?v=20260608-inline-js-light-card">
+    <script src="<?= $theme->assetUrl('js/theme-init.js') ?>?v=20260608-inline-js-light-card"></script>
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100">
 <div class="text-center">
@@ -35,9 +30,10 @@ $message = $page['error_message'] ?? '';
     <p class="text-secondary mb-4"><?= htmlspecialchars($message) ?></p>
     <div class="d-flex gap-2 justify-content-center">
         <a href="/" class="btn btn-outline-light btn-sm">Startseite</a>
-        <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm">Zurück</a>
+        <a href="#" class="btn btn-outline-secondary btn-sm" data-history-back>Zurück</a>
     </div>
 </div>
 <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= $theme->assetUrl('js/esse-dashboard.js') ?>?v=20260608-inline-js-light-card"></script>
 </body>
 </html>
